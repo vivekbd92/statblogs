@@ -1,0 +1,42 @@
+###Interpreting the Coefficients of a Regression Model with an Interaction Term:
+###A Detailed Explanation
+
+##by Vivekananda Das
+##R code
+
+library(dplyr)
+library(ggplot2)
+
+#Importing the data
+g<-read.csv("Book1.csv") #n.b.this data is imaginary :)
+
+#Coding the gre variable as a factor
+g$gre<-as.factor(g$gre)
+
+#model without interaction
+y0<-lm(mgpa~bgpa+gre,data=g)
+summary(y0)
+
+#Manually creating the two straight lines
+h<-0.258+0.883*(g$bgpa)
+j<-0.608+0.883*(g$bgpa)
+
+#Putting h and j values inside the g dataframe
+g$h<-h
+g$j<-j
+
+#visualizing the parallel slopes from the y0 model
+ggplot(g, aes(x=bgpa)) +
+  geom_line( aes(y=h), size=10, color="green") + 
+  geom_line( aes(y=j), size=10, color="red")+theme_grey(base_size = 40)
+
+#Model with interaction
+y1<-lm(mgpa~bgpa+gre+bgpa*gre,data=g)
+summary(y1)
+
+g0 <- filter(g, gre == "0")
+g1 <- filter(g, gre == "1")
+
+#Interaction effect
+qplot(x = bgpa, y = mgpa, data = g, color = gre,size=2) +
+  geom_smooth(method = "lm",size=5,se=FALSE,alpha=0.1)+theme_grey(base_size = 40)
