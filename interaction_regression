@@ -8,7 +8,7 @@ library(dplyr)
 library(ggplot2)
 
 #Importing the data
-g<-read.csv("Book1.csv") #n.b.this data is imaginary :)
+g<-read.csv("Interaction.csv") #n.b.this data is imaginary :)
 
 #Coding the gre variable as a factor
 g$gre<-as.factor(g$gre)
